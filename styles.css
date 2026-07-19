@@ -40,6 +40,7 @@
   --text: #131313;
   --muted: #565656;
   --faint: #8b8b8b;
+  --tick: #16a34a;
   --line: rgba(17, 17, 17, 0.12);
   --line-strong: rgba(17, 17, 17, 0.24);
   --ink: #161616;
@@ -67,6 +68,7 @@
   --text: #f2f2f2;
   --muted: #a5a5a5;
   --faint: #737373;
+  --tick: #4ade80;
   --line: rgba(255, 255, 255, 0.11);
   --line-strong: rgba(255, 255, 255, 0.22);
   --ink: #f2f2f2;
@@ -507,9 +509,25 @@ h1 {
 
 .hero-proof {
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 8px;
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 0.72rem;
+}
+
+.proof-tick {
+  width: 15px;
+  height: 10px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--tick);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* 7. Demo — browser frame and recreated new tab ------------------------ */
