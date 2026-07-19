@@ -1,0 +1,2 @@
+# Dev-only files — everything the shipped site doesn't need.
+serve.mjs

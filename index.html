@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Celerity replaces Chrome's new tab with a quiet command surface: one letter opens a site, a few words search inside it, everything else falls through to the web."
+    />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9e9e9" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#222222" />
+    <meta property="og:title" content="Celerity — Type. Enter. There." />
+    <meta
+      property="og:description"
+      content="The keyboard-first new tab for Chrome. One letter opens a site. A few words search inside it. Everything else falls through to the web."
+    />
+    <meta property="og:type" content="website" />
+    <title>Celerity — The keyboard-first new tab for Chrome</title>
+
+    <link
+      rel="icon"
+      id="favicon"
+      href="assets/tab-icon-light.svg"
+      type="image/svg+xml"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      href="assets/tab-icon.svg"
+      type="image/svg+xml"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <link
+      rel="preload"
+      href="assets/poppins-regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/poppins-medium.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("celerity-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          savedTheme === "dark" || savedTheme === "light"
+            ? savedTheme
+            : prefersDark
+              ? "dark"
+              : "light";
+      } catch {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="script.js"></script>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <!-- Header -->
+    <header class="site-header" id="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="#top" aria-label="Celerity — back to top">
+          <svg class="brand-mark" viewBox="-6 -6 255 151" aria-hidden="true">
+            <path d="M46 5H238" />
+            <path d="M5 72H154" />
+            <path d="M34 134H238" />
+          </svg>
+          <span class="brand-name">Celerity</span>
+        </a>
+
+        <nav class="header-nav" aria-label="Primary">
+          <a href="#how-it-works">How it works</a>
+          <a href="#make-it-yours">Make it yours</a>
+          <a href="#philosophy">Philosophy</a>
+        </nav>
+
+        <div class="header-actions">
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            type="button"
+            aria-label="Dark theme"
+            aria-pressed="false"
+            title="Switch theme (T)"
+          >
+            <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.2 15.2A8.4 8.4 0 0 1 8.8 3.8 8.4 8.4 0 1 0 20.2 15.2Z" />
+            </svg>
+            <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.4" />
+              <path
+                d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"
+              />
+            </svg>
+          </button>
+
+          <a
+            class="button button--ink button--compact"
+            data-store-link
+            href="https://chromewebstore.google.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <svg class="chrome-glyph" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.25" />
+              <circle cx="12" cy="12" r="3.9" />
+              <path d="M21.17 8H12M3.95 6.06 8.54 14M10.88 21.94 15.46 14" />
+            </svg>
+            <span>Add to Chrome</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <!-- Hero — copy, then the live recreation of Celerity in a Chrome frame -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="shell hero-copy">
+          <p class="hero-def">
+            <span class="def-word">ce·ler·i·ty</span>
+            <span class="def-ipa">/sə-ˈler-ə-tē/</span>
+            <span class="def-type">noun</span>
+            <span class="def-meaning">swiftness of movement</span>
+          </p>
+
+          <h1 id="hero-title">Type. Enter. There.</h1>
+
+          <p class="hero-lede">
+            Celerity replaces Chrome's new tab with a quiet command surface. One letter opens a
+            site. A few words search inside it. Everything else falls through to the web.
+          </p>
+
+          <div class="hero-cta">
+            <a
+              class="button button--ink button--large"
+              data-store-link
+              href="https://chromewebstore.google.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <svg class="chrome-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9.25" />
+                <circle cx="12" cy="12" r="3.9" />
+                <path d="M21.17 8H12M3.95 6.06 8.54 14M10.88 21.94 15.46 14" />
+              </svg>
+              <span>Add to Chrome</span>
+              <svg class="button-arrow" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M4 10h11M11 5l5 5-5 5" />
+              </svg>
+            </a>
+            <p class="hero-proof">Free&ensp;·&ensp;No account&ensp;·&ensp;Nothing leaves your browser</p>
+          </div>
+        </div>
+
+        <div class="shell demo-shell">
+          <figure class="browser" id="command-demo">
+            <p class="sr-only">
+              Animated demonstration of Celerity in a Chrome new tab: typing the letter g opens
+              Gmail, typing y followed by words searches YouTube directly, and any other text
+              searches the web.
+            </p>
+
+            <div class="browser-top" aria-hidden="true">
+              <div class="browser-tab">
+                <svg class="browser-tab-mark" viewBox="-6 -6 255 151">
+                  <path d="M46 5H238" />
+                  <path d="M5 72H154" />
+                  <path d="M34 134H238" />
+                </svg>
+                <span>New Tab</span>
+              </div>
+              <span class="browser-tab-ghost">+</span>
+            </div>
+
+            <div class="browser-toolbar" aria-hidden="true">
+              <svg class="toolbar-glyph" viewBox="0 0 20 20"><path d="M12.5 4.5 7 10l5.5 5.5" /></svg>
+              <svg class="toolbar-glyph is-dim" viewBox="0 0 20 20"><path d="M7.5 4.5 13 10l-5.5 5.5" /></svg>
+              <svg class="toolbar-glyph" viewBox="0 0 20 20">
+                <path d="M15.5 8.5A6 6 0 1 0 16 11.5M16 4.5v4h-4" />
+              </svg>
+              <div class="omnibox">
+                <svg class="omnibox-glyph" viewBox="0 0 20 20">
+                  <circle cx="9" cy="9" r="5.2" />
+                  <path d="m13 13 3.4 3.4" />
+                </svg>
+                <span class="omnibox-text" id="omnibox-text" data-placeholder="Search Google or type a URL"></span>
+              </div>
+            </div>
+
+            <div class="newtab" aria-hidden="true">
+              <div class="newtab-center">
+              <div class="newtab-line">
+                <span class="newtab-prompt">›</span>
+                <span class="newtab-typed" id="demo-input"></span>
+                <span class="newtab-caret"></span>
+              </div>
+
+              <p class="newtab-result" id="demo-result-line" data-state="idle">
+                <span class="result-arrow">↳</span>
+                <strong id="demo-result">Waiting for input</strong>
+                <span class="result-detail" id="demo-detail">any key begins</span>
+                <kbd class="result-enter" id="demo-enter">Enter</kbd>
+              </p>
+
+              <div class="board" id="demo-board">
+                <div class="board-cell" data-key="g"><kbd>g</kbd><span>Gmail</span></div>
+                <div class="board-cell" data-key="gh"><kbd>gh</kbd><span>GitHub</span></div>
+                <div class="board-cell" data-key="e"><kbd>e</kbd><span>Excalidraw</span></div>
+                <div class="board-cell" data-key="d"><kbd>d</kbd><span>Dropbox</span></div>
+                <div class="board-cell" data-key="y"><kbd>y</kbd><span>YouTube</span></div>
+                <div class="board-cell" data-key="s"><kbd>s</kbd><span>Spotify</span></div>
+                <div class="board-cell" data-key="c"><kbd>c</kbd><span>ChatGPT</span></div>
+                <div class="board-cell" data-key="m"><kbd>m</kbd><span>Mobbin</span></div>
+                <div class="board-cell" data-key="n"><kbd>n</kbd><span>Netflix</span></div>
+                <div class="board-cell" data-key="f"><kbd>f</kbd><span>Figma</span></div>
+                <div class="board-cell" data-key="l"><kbd>l</kbd><span>Linear</span></div>
+                <div class="board-cell" data-key="a"><kbd>a</kbd><span>Amazon</span></div>
+              </div>
+              </div>
+
+              <p class="newtab-wordmark">Celerity</p>
+            </div>
+          </figure>
+
+          <div class="demo-caption">
+            <p>Celerity on a new tab — recreated live, not screenshotted.</p>
+            <button class="demo-toggle" id="demo-toggle" type="button">
+              <span class="demo-toggle-label">Pause</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works — the three outcomes of one input -->
+      <section class="how-section" id="how-it-works" aria-labelledby="how-title">
+        <div class="shell">
+          <header class="section-head" data-reveal>
+            <p class="kicker">How it works</p>
+            <h2 id="how-title">Every keystroke knows where it's going.</h2>
+            <p class="section-lede">
+              No commands to memorize, no syntax to learn. Celerity reads what you type and does
+              the obvious thing.
+            </p>
+          </header>
+
+          <ol class="routes">
+            <li class="route" data-reveal>
+              <p class="route-input"><span class="route-typed">g</span><kbd>Enter</kbd></p>
+              <h3>Opens Gmail</h3>
+              <p>
+                Single letters launch the places you live. Muscle memory forms by day two.
+              </p>
+            </li>
+            <li class="route" data-reveal>
+              <p class="route-input"><span class="route-typed">y ambient focus</span><kbd>Enter</kbd></p>
+              <h3>Searches YouTube</h3>
+              <p>
+                A shortcut plus words goes straight to that site's own results. The homepage never
+                sees you.
+              </p>
+            </li>
+            <li class="route" data-reveal>
+              <p class="route-input"><span class="route-typed">best split keyboard</span><kbd>Enter</kbd></p>
+              <h3>Searches the web</h3>
+              <p>
+                Anything that isn't a shortcut falls through to your default engine. Typos
+                included.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Make it yours — customization ledger -->
+      <section class="yours-section" id="make-it-yours" aria-labelledby="yours-title">
+        <div class="shell yours-layout">
+          <header class="yours-head" data-reveal>
+            <p class="kicker">Make it yours</p>
+            <h2 id="yours-title">Shaped around your habits.</h2>
+            <p class="section-lede">
+              Celerity is personal without being busy. Tune a handful of things once, then let the
+              interface recede.
+            </p>
+          </header>
+
+          <ul class="feature-ledger">
+            <li data-reveal>
+              <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2.75" y="6.25" width="18.5" height="11.5" rx="2.5" />
+                <path d="M6.5 10h.01M10.3 10h.01M14.1 10h.01M17.9 10h.01M7.5 14h9" />
+              </svg>
+              <div>
+                <h3>Your shortcuts, your alphabet</h3>
+                <p>Map any key to any place. <kbd>g</kbd> can be Gmail today and GitHub the day you switch.</p>
+              </div>
+            </li>
+            <li data-reveal>
+              <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.5" cy="10.5" r="6.75" />
+                <path d="m15.4 15.4 5.35 5.35M8 10.5h5M10.5 8v5" />
+              </svg>
+              <div>
+                <h3>Search where you're going</h3>
+                <p>Point a shortcut at a site's search path and skip its homepage forever.</p>
+              </div>
+            </li>
+            <li data-reveal>
+              <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8.75" />
+                <path d="M12 3.25a8.75 8.75 0 0 1 0 17.5Z" fill="currentColor" stroke="none" />
+              </svg>
+              <div>
+                <h3>Light, dark, or true black</h3>
+                <p>Follow the system, or pick the theme that disappears into your browser.</p>
+              </div>
+            </li>
+            <li data-reveal>
+              <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3.5 8.5h13.75M13.5 4.75 17.25 8.5l-3.75 3.75M20.5 15.5H6.75M10.5 11.75 6.75 15.5l3.75 3.75" />
+              </svg>
+              <div>
+                <h3>Yours to carry</h3>
+                <p>Export your setup as a single file. Import it on any machine running Chrome.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Philosophy — the brand statement -->
+      <section class="philosophy-section" id="philosophy" aria-labelledby="philosophy-title">
+        <div class="shell philosophy-inner">
+          <header class="section-head section-head--center" data-reveal>
+            <p class="kicker">Philosophy</p>
+            <h2 id="philosophy-title">Speed is a form of respect.</h2>
+          </header>
+          <p class="philosophy-statement" data-reveal>
+            Most new tabs want to become destinations — feeds, widgets, weather, news.
+            <strong>Celerity believes a new tab is a doorway.</strong> Its only job is to close
+            behind you.
+          </p>
+          <dl class="tenets" data-reveal>
+            <div>
+              <dt>Quiet</dt>
+              <dd>No feeds. No widgets. Nothing to check.</dd>
+            </div>
+            <div>
+              <dt>Direct</dt>
+              <dd>Every interaction exists to move you onward.</dd>
+            </div>
+            <div>
+              <dt>Learnable</dt>
+              <dd>The more you use it, the less you see it.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- Closing CTA -->
+      <section class="closing-section" aria-labelledby="closing-title">
+        <div class="shell">
+          <div class="closing-card" data-reveal>
+            <div class="closing-copy">
+              <p class="closing-kicker"><span>chrome://</span>newtab</p>
+              <h2 id="closing-title">Make every new tab a head start.</h2>
+              <p>
+                Free, private, ready in seconds. Your setup stays on your machine and goes
+                wherever you take it.
+              </p>
+            </div>
+            <div class="closing-cta">
+              <a
+                class="button button--paper button--large"
+                data-store-link
+                href="https://chromewebstore.google.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <svg class="chrome-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9.25" />
+                  <circle cx="12" cy="12" r="3.9" />
+                  <path d="M21.17 8H12M3.95 6.06 8.54 14M10.88 21.94 15.46 14" />
+                </svg>
+                <span>Add to Chrome</span>
+                <svg class="button-arrow" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M4 10h11M11 5l5 5-5 5" />
+                </svg>
+              </a>
+              <p class="closing-note">Coming soon to the Chrome Web Store</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <a class="brand" href="#top" aria-label="Celerity — back to top">
+          <svg class="brand-mark" viewBox="-6 -6 255 151" aria-hidden="true">
+            <path d="M46 5H238" />
+            <path d="M5 72H154" />
+            <path d="M34 134H238" />
+          </svg>
+          <span class="brand-name">Celerity</span>
+        </a>
+        <p class="footer-hint">Press <kbd>T</kbd> to switch themes</p>
+        <p class="footer-legal">© <span id="current-year">2026</span> Celerity</p>
+      </div>
+    </footer>
+  </body>
+</html>
