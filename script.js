@@ -4,9 +4,8 @@
    2. Theme — toggle, persistence, "T" shortcut
    3. Favicon — follows the browser color scheme
    4. Header — hairline appears on scroll
-   5. Demo — the recreated new tab in the hero
-   6. Reveals — sections fade in on scroll
-   7. Footer year
+   5. Reveals — sections fade in on scroll
+   6. Footer year
 */
 
 /* 1. Config ------------------------------------------------------------ */
@@ -14,27 +13,6 @@
 // Replace with Celerity's listing URL once published. The HTML anchors keep
 // the same URL as a no-JavaScript fallback.
 const CHROME_STORE_URL = "https://chromewebstore.google.com/";
-
-const DEMO_STEPS = [
-  {
-    input: "g",
-    label: "Gmail",
-    detail: "shortcut matched",
-    url: "mail.google.com",
-  },
-  {
-    input: "y ambient focus",
-    label: "YouTube",
-    detail: "site search",
-    url: "youtube.com/results?q=ambient+focus",
-  },
-  {
-    input: "best split keyboard",
-    label: "Web search",
-    detail: "default fallback",
-    url: "google.com/search?q=best+split+keyboard",
-  },
-];
 
 const root = document.documentElement;
 const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -133,143 +111,7 @@ const syncHeader = () => {
 syncHeader();
 window.addEventListener("scroll", syncHeader, { passive: true });
 
-/* 5. Demo -------------------------------------------------------------- */
-
-const demoInput = document.getElementById("demo-input");
-const demoResultLine = document.getElementById("demo-result-line");
-const demoResult = document.getElementById("demo-result");
-const demoDetail = document.getElementById("demo-detail");
-const demoEnter = document.getElementById("demo-enter");
-const demoBoard = document.getElementById("demo-board");
-const omniboxText = document.getElementById("omnibox-text");
-const newtab = document.querySelector(".newtab");
-const demoToggle = document.getElementById("demo-toggle");
-const demoToggleLabel = demoToggle?.querySelector(".demo-toggle-label");
-
-const boardCells = new Map();
-demoBoard?.querySelectorAll(".board-cell").forEach((cell) => {
-  boardCells.set(cell.dataset.key, cell);
-});
-const boardKeys = [...boardCells.keys()];
-
-// The first whitespace-separated token decides the match, mirroring how the
-// extension resolves shortcuts ("y ambient focus" → the "y" shortcut).
-const matchShortcut = (input) => {
-  const token = input.trim().split(/\s+/)[0] ?? "";
-  return boardKeys.includes(token) ? token : null;
-};
-
-if (demoInput && demoResultLine && demoResult && demoDetail && demoEnter && omniboxText) {
-  let stepIndex = 0;
-  let timer = null;
-  let userPaused = false;
-
-  const setHighlight = (input) => {
-    const hit = matchShortcut(input);
-    boardCells.forEach((cell, key) => {
-      cell.classList.toggle("is-hit", key === hit);
-    });
-  };
-
-  const showResult = (step) => {
-    demoResult.textContent = step.label;
-    demoDetail.textContent = step.detail;
-    demoResultLine.dataset.state = "match";
-  };
-
-  const resetStage = () => {
-    demoInput.textContent = "";
-    demoResultLine.dataset.state = "idle";
-    demoEnter.classList.remove("is-pressed");
-    omniboxText.textContent = "";
-    newtab?.classList.remove("is-leaving");
-    setHighlight("");
-  };
-
-  const schedule = (fn, ms) => {
-    timer = window.setTimeout(fn, ms);
-  };
-
-  const runStep = () => {
-    const step = DEMO_STEPS[stepIndex];
-    resetStage();
-
-    let typed = 0;
-    const typeNext = () => {
-      typed += 1;
-      const partial = step.input.slice(0, typed);
-      demoInput.textContent = partial;
-      setHighlight(partial);
-
-      if (typed < step.input.length) {
-        schedule(typeNext, 62 + (typed % 3) * 26);
-        return;
-      }
-
-      schedule(() => {
-        showResult(step);
-        schedule(pressEnter, 850);
-      }, 420);
-    };
-
-    const pressEnter = () => {
-      demoEnter.classList.add("is-pressed");
-      schedule(() => {
-        demoEnter.classList.remove("is-pressed");
-        omniboxText.textContent = step.url;
-        newtab?.classList.add("is-leaving");
-        schedule(advance, 1350);
-      }, 170);
-    };
-
-    const advance = () => {
-      stepIndex = (stepIndex + 1) % DEMO_STEPS.length;
-      runStep();
-    };
-
-    schedule(typeNext, 420);
-  };
-
-  const stopDemo = () => {
-    if (timer) window.clearTimeout(timer);
-    timer = null;
-  };
-
-  const startDemo = () => {
-    stopDemo();
-    if (userPaused || document.hidden || reducedMotion.matches) return;
-    runStep();
-  };
-
-  // Reduced motion gets the first step's outcome as a still frame.
-  const showStaticState = () => {
-    const step = DEMO_STEPS[0];
-    demoInput.textContent = step.input;
-    setHighlight(step.input);
-    showResult(step);
-  };
-
-  if (reducedMotion.matches) {
-    showStaticState();
-    demoToggle?.setAttribute("hidden", "");
-  } else {
-    startDemo();
-  }
-
-  demoToggle?.addEventListener("click", () => {
-    userPaused = !userPaused;
-    if (demoToggleLabel) demoToggleLabel.textContent = userPaused ? "Play" : "Pause";
-    if (userPaused) stopDemo();
-    else startDemo();
-  });
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopDemo();
-    else startDemo();
-  });
-}
-
-/* 6. Reveals ----------------------------------------------------------- */
+/* 5. Reveals ----------------------------------------------------------- */
 
 const revealItems = document.querySelectorAll("[data-reveal]");
 if (reducedMotion.matches || !("IntersectionObserver" in window)) {
@@ -290,7 +132,7 @@ if (reducedMotion.matches || !("IntersectionObserver" in window)) {
   root.classList.add("reveal-ready");
 }
 
-/* 7. Footer year ------------------------------------------------------- */
+/* 6. Footer year ------------------------------------------------------- */
 
 const year = document.getElementById("current-year");
 if (year) year.textContent = String(new Date().getFullYear());

@@ -120,7 +120,7 @@
     </header>
 
     <main id="main-content" tabindex="-1">
-      <!-- Hero — copy, then the live recreation of Celerity in a Chrome frame -->
+      <!-- Hero — copy, then a screenshot of Celerity in a browser frame -->
       <section class="hero" aria-labelledby="hero-title">
         <div class="shell hero-copy">
           <p class="hero-def">
@@ -173,81 +173,14 @@
         </div>
 
         <div class="shell demo-shell">
-          <figure class="browser" id="command-demo">
-            <p class="sr-only">
-              Animated demonstration of Celerity in a Chrome new tab: typing the letter g opens
-              Gmail, typing y followed by words searches YouTube directly, and any other text
-              searches the web.
-            </p>
-
-            <div class="browser-top" aria-hidden="true">
-              <div class="browser-tab">
-                <svg class="browser-tab-mark" viewBox="-6 -6 255 151">
-                  <path d="M46 5H238" />
-                  <path d="M5 72H154" />
-                  <path d="M34 134H238" />
-                </svg>
-                <span>New Tab</span>
-              </div>
-              <span class="browser-tab-ghost">+</span>
-            </div>
-
-            <div class="browser-toolbar" aria-hidden="true">
-              <svg class="toolbar-glyph" viewBox="0 0 20 20"><path d="M12.5 4.5 7 10l5.5 5.5" /></svg>
-              <svg class="toolbar-glyph is-dim" viewBox="0 0 20 20"><path d="M7.5 4.5 13 10l-5.5 5.5" /></svg>
-              <svg class="toolbar-glyph" viewBox="0 0 20 20">
-                <path d="M15.5 8.5A6 6 0 1 0 16 11.5M16 4.5v4h-4" />
-              </svg>
-              <div class="omnibox">
-                <svg class="omnibox-glyph" viewBox="0 0 20 20">
-                  <circle cx="9" cy="9" r="5.2" />
-                  <path d="m13 13 3.4 3.4" />
-                </svg>
-                <span class="omnibox-text" id="omnibox-text" data-placeholder="Search Google or type a URL"></span>
-              </div>
-            </div>
-
-            <div class="newtab" aria-hidden="true">
-              <div class="newtab-center">
-              <div class="newtab-line">
-                <span class="newtab-prompt">›</span>
-                <span class="newtab-typed" id="demo-input"></span>
-                <span class="newtab-caret"></span>
-              </div>
-
-              <p class="newtab-result" id="demo-result-line" data-state="idle">
-                <span class="result-arrow">↳</span>
-                <strong id="demo-result">Waiting for input</strong>
-                <span class="result-detail" id="demo-detail">any key begins</span>
-                <kbd class="result-enter" id="demo-enter">Enter</kbd>
-              </p>
-
-              <div class="board" id="demo-board">
-                <div class="board-cell" data-key="g"><kbd>g</kbd><span>Gmail</span></div>
-                <div class="board-cell" data-key="gh"><kbd>gh</kbd><span>GitHub</span></div>
-                <div class="board-cell" data-key="e"><kbd>e</kbd><span>Excalidraw</span></div>
-                <div class="board-cell" data-key="d"><kbd>d</kbd><span>Dropbox</span></div>
-                <div class="board-cell" data-key="y"><kbd>y</kbd><span>YouTube</span></div>
-                <div class="board-cell" data-key="s"><kbd>s</kbd><span>Spotify</span></div>
-                <div class="board-cell" data-key="c"><kbd>c</kbd><span>ChatGPT</span></div>
-                <div class="board-cell" data-key="m"><kbd>m</kbd><span>Mobbin</span></div>
-                <div class="board-cell" data-key="n"><kbd>n</kbd><span>Netflix</span></div>
-                <div class="board-cell" data-key="f"><kbd>f</kbd><span>Figma</span></div>
-                <div class="board-cell" data-key="l"><kbd>l</kbd><span>Linear</span></div>
-                <div class="board-cell" data-key="a"><kbd>a</kbd><span>Amazon</span></div>
-              </div>
-              </div>
-
-              <p class="newtab-wordmark">Celerity</p>
-            </div>
-          </figure>
-
-          <div class="demo-caption">
-            <p>Celerity on a new tab — recreated live, not screenshotted.</p>
-            <button class="demo-toggle" id="demo-toggle" type="button">
-              <span class="demo-toggle-label">Pause</span>
-            </button>
-          </div>
+          <img
+            class="demo-image"
+            src="assets/celerity-clean.png"
+            width="1292"
+            height="775"
+            decoding="async"
+            alt="Celerity on a Chrome new tab: a grid of single-letter shortcuts — g for Gmail, y for YouTube, gh for GitHub, n for Netflix and eight more — above the Celerity wordmark."
+          />
         </div>
       </section>
 
