@@ -46,9 +46,10 @@
   --ink: #161616;
   --on-ink: #f2f2f2;
   --on-ink-muted: rgba(242, 242, 242, 0.62);
-  --header-bg: rgba(233, 233, 233, 0.85);
+  --bar-bg: rgba(233, 233, 233, 0.85);
   --container: 1120px;
-  --footer-h: 96px;
+  --bar-h: 96px;
+  --screen-inset: calc(var(--bar-h) + 24px);
   --font-sans: "Poppins", "Segoe UI", system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -68,7 +69,7 @@
   --ink: #f2f2f2;
   --on-ink: #1a1a1a;
   --on-ink-muted: rgba(26, 26, 26, 0.6);
-  --header-bg: rgba(34, 34, 34, 0.85);
+  --bar-bg: rgba(34, 34, 34, 0.85);
 }
 
 /* 2. Base and utilities ------------------------------------------------ */
@@ -142,7 +143,7 @@ main > section {
   display: grid;
   place-items: center;
   min-height: 100dvh;
-  padding: 92px 0 36px;
+  padding-block: var(--screen-inset);
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
@@ -169,27 +170,27 @@ main > section {
 
 /* 3. Header ------------------------------------------------------------ */
 
+/* Header and footer are fixed furniture: always pinned, always opaque, always
+   ruled. Height sits on the bar itself so the border counts inside it and the
+   two match exactly — both are driven by --bar-h. */
 .site-header {
   position: fixed;
   inset: 0 0 auto;
   z-index: 50;
-  border-bottom: 1px solid transparent;
-  transition: background-color 240ms ease, border-color 240ms ease,
-    backdrop-filter 240ms ease;
-}
-
-.site-header.is-scrolled {
-  border-bottom-color: var(--line);
-  background: var(--header-bg);
+  display: grid;
+  align-items: center;
+  min-height: var(--bar-h);
+  border-bottom: 1px solid var(--line);
+  background: var(--bar-bg);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
+  transition: background-color 280ms ease, border-color 280ms ease;
 }
 
 .header-inner {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  min-height: 68px;
   gap: 24px;
 }
 
@@ -474,13 +475,13 @@ h1 {
 
 /* 7. Showcase — product screenshot ------------------------------------- */
 
-/* Capped by height as well as width so the whole screenshot fits on one
-   screen without the section outgrowing its snap point. */
+/* Capped to the band between the two bars so the screenshot always fits one
+   screen without pushing the section past its snap point. */
 .demo-image {
   width: auto;
   max-width: 100%;
   height: auto;
-  max-height: 74dvh;
+  max-height: calc(100dvh - var(--screen-inset) * 2 - 16px);
   margin-inline: auto;
 }
 
@@ -503,10 +504,6 @@ h2 {
 }
 
 /* philosophy */
-
-.philosophy-section {
-  border-top: 1px solid var(--line);
-}
 
 .philosophy-statement {
   max-width: 720px;
@@ -561,11 +558,6 @@ h2 {
 
 /* closing */
 
-/* Short by exactly the footer's height so the closing screen and the footer
-   share one snap position instead of stranding the footer off-screen. */
-.closing-section {
-  min-height: calc(100dvh - var(--footer-h));
-}
 
 .closing-card {
   display: grid;
@@ -619,13 +611,19 @@ h2 {
 
 /* 9. Footer ------------------------------------------------------------ */
 
-/* The height lives on the footer itself, border included, so the closing
-   screen can subtract exactly this much and land flush with the page bottom. */
+/* Pinned to the bottom for the whole page, mirroring the header. */
 .site-footer {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 50;
   display: grid;
   align-items: center;
-  min-height: var(--footer-h);
+  min-height: var(--bar-h);
   border-top: 1px solid var(--line);
+  background: var(--bar-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  transition: background-color 280ms ease, border-color 280ms ease;
 }
 
 .footer-inner {
@@ -706,13 +704,9 @@ h2 {
   }
 
   .header-inner {
-    min-height: 62px;
     gap: 12px;
   }
 
-  main > section {
-    padding: 86px 0 32px;
-  }
 
   h1 {
     margin-bottom: 22px;
@@ -746,7 +740,8 @@ h2 {
   }
 
   :root {
-    --footer-h: 84px;
+    --bar-h: 84px;
+    --screen-inset: calc(var(--bar-h) + 18px);
   }
 }
 

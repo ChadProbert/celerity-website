@@ -3,9 +3,8 @@
    1. Config
    2. Theme — toggle, persistence, "T" shortcut
    3. Favicon — follows the browser color scheme
-   4. Header — hairline appears on scroll
-   5. Reveals — sections fade in on scroll
-   6. Footer year
+   4. Reveals — sections fade in on scroll
+   5. Footer year
 */
 
 /* 1. Config ------------------------------------------------------------ */
@@ -102,16 +101,7 @@ if (favicon) {
   systemTheme.addEventListener("change", applyFavicon);
 }
 
-/* 4. Header ------------------------------------------------------------ */
-
-const header = document.getElementById("site-header");
-const syncHeader = () => {
-  header?.classList.toggle("is-scrolled", window.scrollY > 8);
-};
-syncHeader();
-window.addEventListener("scroll", syncHeader, { passive: true });
-
-/* 5. Reveals ----------------------------------------------------------- */
+/* 4. Reveals ----------------------------------------------------------- */
 
 const revealItems = document.querySelectorAll("[data-reveal]");
 if (reducedMotion.matches || !("IntersectionObserver" in window)) {
@@ -132,7 +122,7 @@ if (reducedMotion.matches || !("IntersectionObserver" in window)) {
   root.classList.add("reveal-ready");
 }
 
-/* 6. Footer year ------------------------------------------------------- */
+/* 5. Footer year ------------------------------------------------------- */
 
 const year = document.getElementById("current-year");
 if (year) year.textContent = String(new Date().getFullYear());
