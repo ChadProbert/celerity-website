@@ -296,17 +296,9 @@ button {
   color: var(--on-ink);
 }
 
-.button--ink:hover {
-  transform: translateY(-1px);
-}
-
 .button--paper {
   background: var(--bg);
   color: var(--text);
-}
-
-.button--paper:hover {
-  transform: translateY(-1px);
 }
 
 .button--compact {
