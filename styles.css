@@ -196,7 +196,7 @@ button {
 
 .header-inner {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   min-height: 68px;
   gap: 24px;
@@ -227,45 +227,6 @@ button {
   stroke-width: 16;
   stroke-linecap: round;
   fill: none;
-}
-
-.header-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-}
-
-.header-nav a {
-  position: relative;
-  padding-block: 8px;
-  color: var(--muted);
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 160ms ease;
-}
-
-.header-nav a::after {
-  position: absolute;
-  right: 0;
-  bottom: 4px;
-  left: 0;
-  height: 1px;
-  content: "";
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 200ms var(--ease);
-}
-
-.header-nav a:hover {
-  color: var(--text);
-}
-
-.header-nav a:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
 }
 
 .header-actions {
@@ -1050,14 +1011,6 @@ h2 {
 /* 11. Responsive — tablet (960) ---------------------------------------- */
 
 @media (max-width: 960px) {
-  .header-inner {
-    grid-template-columns: 1fr auto;
-  }
-
-  .header-nav {
-    display: none;
-  }
-
   .closing-card {
     grid-template-columns: 1fr;
     align-items: start;
