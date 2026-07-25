@@ -48,7 +48,7 @@
   --on-ink-muted: rgba(242, 242, 242, 0.62);
   --header-bg: rgba(233, 233, 233, 0.85);
   --container: 1120px;
-  --section-space: clamp(5.5rem, 9vw, 8.75rem);
+  --footer-h: 96px;
   --font-sans: "Poppins", "Segoe UI", system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -81,7 +81,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
+  scroll-snap-type: y mandatory;
 }
 
 body {
@@ -132,6 +132,19 @@ button {
 .shell {
   width: min(calc(100% - 48px), var(--container));
   margin-inline: auto;
+}
+
+/* Every section is one screen with its content centred, and the page snaps
+   to whichever screen the scroll lands nearest. The fixed header floats over
+   the top of each screen, so the uneven vertical padding nudges the centre
+   down to clear it. */
+main > section {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 92px 0 36px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .skip-link {
@@ -372,10 +385,6 @@ kbd {
 
 /* 6. Hero -------------------------------------------------------------- */
 
-.hero {
-  padding: clamp(9.5rem, 14vh, 11.5rem) 0 var(--section-space);
-}
-
 .hero-copy {
   display: flex;
   flex-direction: column;
@@ -463,16 +472,16 @@ h1 {
   stroke-linejoin: round;
 }
 
-/* 7. Demo — product screenshot ----------------------------------------- */
+/* 7. Showcase — product screenshot ------------------------------------- */
 
-.demo-shell {
-  margin-top: clamp(3.5rem, 6vw, 5rem);
-}
-
+/* Capped by height as well as width so the whole screenshot fits on one
+   screen without the section outgrowing its snap point. */
 .demo-image {
-  display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: auto;
+  max-height: 74dvh;
+  margin-inline: auto;
 }
 
 /* 8. Content sections -------------------------------------------------- */
@@ -496,7 +505,6 @@ h2 {
 /* philosophy */
 
 .philosophy-section {
-  padding: var(--section-space) 0;
   border-top: 1px solid var(--line);
 }
 
@@ -553,8 +561,10 @@ h2 {
 
 /* closing */
 
+/* Short by exactly the footer's height so the closing screen and the footer
+   share one snap position instead of stranding the footer off-screen. */
 .closing-section {
-  padding: var(--section-space) 0;
+  min-height: calc(100dvh - var(--footer-h));
 }
 
 .closing-card {
@@ -609,14 +619,18 @@ h2 {
 
 /* 9. Footer ------------------------------------------------------------ */
 
+/* The height lives on the footer itself, border included, so the closing
+   screen can subtract exactly this much and land flush with the page bottom. */
 .site-footer {
+  display: grid;
+  align-items: center;
+  min-height: var(--footer-h);
   border-top: 1px solid var(--line);
 }
 
 .footer-inner {
   display: grid;
   place-items: center;
-  min-height: 96px;
   color: var(--muted);
   font-size: 0.78rem;
 }
@@ -646,8 +660,7 @@ h2 {
   .hero-def,
   .hero h1,
   .hero-lede,
-  .hero-cta,
-  .demo-shell {
+  .hero-cta {
     animation: rise 700ms var(--ease) both;
   }
 
@@ -663,9 +676,6 @@ h2 {
     animation-delay: 200ms;
   }
 
-  .demo-shell {
-    animation-delay: 300ms;
-  }
 }
 
 .reveal-ready [data-reveal] {
@@ -700,8 +710,8 @@ h2 {
     gap: 12px;
   }
 
-  .hero {
-    padding-top: 8.25rem;
+  main > section {
+    padding: 86px 0 32px;
   }
 
   h1 {
@@ -735,8 +745,8 @@ h2 {
     border-radius: 16px;
   }
 
-  .footer-inner {
-    min-height: 84px;
+  :root {
+    --footer-h: 84px;
   }
 }
 
@@ -750,10 +760,6 @@ h2 {
     font-size: 0.78rem;
   }
 
-  .hero {
-    padding-top: 7.5rem;
-  }
-
   .button--large {
     width: 100%;
     max-width: 300px;
@@ -764,11 +770,20 @@ h2 {
   }
 }
 
+/* Mandatory snapping puts anything taller than the screen out of reach, so it
+   is dropped where a screen is too short to hold a section outright. */
+@media (max-height: 700px) {
+  html {
+    scroll-snap-type: none;
+  }
+}
+
 /* 12. Reduced motion --------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+    scroll-snap-type: none;
   }
 
   *,
