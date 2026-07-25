@@ -836,10 +836,6 @@ h1 {
   max-width: 700px;
 }
 
-#how-title {
-  max-width: 21ch;
-}
-
 .section-head--center {
   margin-inline: auto;
   text-align: center;
@@ -852,72 +848,11 @@ h2 {
   line-height: 1.08;
 }
 
-.section-lede {
-  margin: 0;
-  color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
-
-/* how it works */
-
-.how-section {
-  padding: var(--section-space) 0;
-  border-block: 1px solid var(--line);
-  background: var(--surface);
-}
-
-.routes {
-  margin: clamp(3rem, 5.5vw, 4.5rem) 0 0;
-  padding: 0;
-  border-top: 1px solid var(--line-strong);
-  list-style: none;
-}
-
-.route {
-  display: grid;
-  grid-template-columns: minmax(240px, 320px) minmax(170px, 220px) 1fr;
-  gap: 24px 40px;
-  align-items: baseline;
-  padding: 30px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.route-input {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-}
-
-.route-typed {
-  padding: 9px 14px;
-  border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  background: var(--raised);
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.route h3 {
-  margin: 0;
-  font-size: 1.02rem;
-  letter-spacing: -0.015em;
-}
-
-.route > p:last-child {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.65;
-}
-
 /* philosophy */
 
 .philosophy-section {
   padding: var(--section-space) 0;
+  border-top: 1px solid var(--line);
 }
 
 .philosophy-statement {
@@ -1112,14 +1047,6 @@ h2 {
   transform: translateY(0);
 }
 
-.reveal-ready .route:nth-child(2) {
-  transition-delay: 70ms;
-}
-
-.reveal-ready .route:nth-child(3) {
-  transition-delay: 140ms;
-}
-
 /* 11. Responsive — tablet (960) ---------------------------------------- */
 
 @media (max-width: 960px) {
@@ -1129,16 +1056,6 @@ h2 {
 
   .header-nav {
     display: none;
-  }
-
-  .route {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 26px 0;
-  }
-
-  .route h3 {
-    margin-top: 4px;
   }
 
   .closing-card {
@@ -1242,10 +1159,6 @@ h2 {
   .button--large {
     width: 100%;
     max-width: 300px;
-  }
-
-  .route-input {
-    flex-wrap: wrap;
   }
 
   .closing-card {
