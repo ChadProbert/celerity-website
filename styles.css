@@ -170,9 +170,8 @@ main > section {
 
 /* 3. Header ------------------------------------------------------------ */
 
-/* Header and footer are fixed furniture: always pinned, always opaque, always
-   ruled. Height sits on the bar itself so the border counts inside it and the
-   two match exactly — both are driven by --bar-h. */
+/* Header and footer are fixed furniture: always pinned, always opaque. Height
+   sits on the bar itself so the two match exactly — both driven by --bar-h. */
 .site-header {
   position: fixed;
   inset: 0 0 auto;
@@ -180,11 +179,10 @@ main > section {
   display: grid;
   align-items: center;
   min-height: var(--bar-h);
-  border-bottom: 1px solid var(--line);
   background: var(--bar-bg);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
-  transition: background-color 280ms ease, border-color 280ms ease;
+  transition: background-color 280ms ease;
 }
 
 /* Full-bleed rather than shell-constrained, so the brand and actions sit at
@@ -625,11 +623,10 @@ h2 {
   display: grid;
   align-items: center;
   min-height: var(--bar-h);
-  border-top: 1px solid var(--line);
   background: var(--bar-bg);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
-  transition: background-color 280ms ease, border-color 280ms ease;
+  transition: background-color 280ms ease;
 }
 
 .footer-inner {
