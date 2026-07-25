@@ -281,7 +281,15 @@ main > section {
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 160ms ease, transform 160ms var(--ease);
+  transition: background-color 160ms ease, transform 200ms var(--ease);
+  /* Own compositing layer, so the scale below is interpolated on the GPU
+     instead of re-rasterising the label and icons on every frame. */
+  will-change: transform;
+}
+
+/* Hover first, so the press below still wins while the button is held. */
+.button:hover {
+  transform: scale(1.03);
 }
 
 .button:active {
@@ -334,11 +342,6 @@ main > section {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.7;
-  transition: transform 180ms var(--ease);
-}
-
-.button:hover .button-arrow {
-  transform: translateX(3px);
 }
 
 /* 5. Shared type — headings, kickers, keycaps -------------------------- */
