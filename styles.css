@@ -383,6 +383,11 @@ kbd {
   text-align: center;
 }
 
+.hero-mark {
+  width: clamp(70px, 10vw, 104px);
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
 .hero-def {
   display: flex;
   flex-wrap: wrap;
@@ -640,6 +645,7 @@ h2 {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .hero-mark,
   .hero-def,
   .hero h1,
   .hero-lede,
