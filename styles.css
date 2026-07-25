@@ -50,6 +50,7 @@
   --container: 1120px;
   --bar-h: 96px;
   --screen-inset: calc(var(--bar-h) + 24px);
+  --gutter: 24px;
   --font-sans: "Poppins", "Segoe UI", system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -131,14 +132,13 @@ button {
 }
 
 .shell {
-  width: min(calc(100% - 48px), var(--container));
+  width: min(calc(100% - var(--gutter) * 2), var(--container));
   margin-inline: auto;
 }
 
 /* Every section is one screen with its content centred, and the page snaps
-   to whichever screen the scroll lands nearest. The fixed header floats over
-   the top of each screen, so the uneven vertical padding nudges the centre
-   down to clear it. */
+   to whichever screen the scroll lands nearest. The inset clears the fixed
+   bars top and bottom, so content centres in the band between them. */
 main > section {
   display: grid;
   place-items: center;
@@ -187,11 +187,14 @@ main > section {
   transition: background-color 280ms ease, border-color 280ms ease;
 }
 
+/* Full-bleed rather than shell-constrained, so the brand and actions sit at
+   the screen edges. The gutter matches .shell's so the inset stays in step. */
 .header-inner {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 24px;
+  padding-inline: var(--gutter);
 }
 
 .brand {
@@ -699,9 +702,6 @@ h2 {
 /* 11. Responsive — mobile (760, 480) ----------------------------------- */
 
 @media (max-width: 760px) {
-  .shell {
-    width: min(calc(100% - 36px), var(--container));
-  }
 
   .header-inner {
     gap: 12px;
@@ -742,6 +742,7 @@ h2 {
   :root {
     --bar-h: 84px;
     --screen-inset: calc(var(--bar-h) + 18px);
+    --gutter: 18px;
   }
 }
 
