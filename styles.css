@@ -279,7 +279,10 @@ main > section {
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 160ms ease, transform 200ms var(--ease);
+  /* Not --ease here: that curve is nearly all travelled in its first moments,
+     which makes a hover scale read as a pop. This one eases in and out, so the
+     button grows gradually from rest. */
+  transition: background-color 160ms ease, transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
   /* Own compositing layer, so the scale below is interpolated on the GPU
      instead of re-rasterising the label and icons on every frame. */
   will-change: transform;
@@ -287,11 +290,13 @@ main > section {
 
 /* Hover first, so the press below still wins while the button is held. */
 .button:hover {
-  transform: scale(1.03);
+  transform: scale(1.025);
 }
 
+/* The press stays quick — a gradual squish would feel unresponsive. */
 .button:active {
   transform: translateY(1px) scale(0.99);
+  transition-duration: 110ms;
 }
 
 .button--ink {
