@@ -107,19 +107,18 @@ const revealItems = document.querySelectorAll("[data-reveal]");
 if (reducedMotion.matches || !("IntersectionObserver" in window)) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 } else {
+  // Toggled rather than one-shot: items reset as their screen leaves the
+  // viewport, so every section replays its entrance on the way back too.
   const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
+    (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
       });
     },
     { rootMargin: "0px 0px -6%", threshold: 0.1 },
   );
 
   revealItems.forEach((item) => revealObserver.observe(item));
-  root.classList.add("reveal-ready");
 }
 
 /* 5. Footer year ------------------------------------------------------- */

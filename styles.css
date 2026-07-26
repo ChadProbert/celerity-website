@@ -645,49 +645,31 @@ h2 {
 
 /* 10. Motion — entrances and reveals ----------------------------------- */
 
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .hero-mark,
-  .hero-def,
-  .hero h1,
-  .hero-lede,
-  .hero-cta {
-    animation: rise 700ms var(--ease) both;
-  }
-
-  .hero h1 {
-    animation-delay: 60ms;
-  }
-
-  .hero-lede {
-    animation-delay: 130ms;
-  }
-
-  .hero-cta {
-    animation-delay: 200ms;
-  }
-
-}
-
+/* The transition lives on the visible state only, so arriving animates but
+   leaving resets instantly — a screen scrolled back to is always ready to
+   play again rather than caught mid fade-out. */
 .reveal-ready [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
 }
 
 .reveal-ready [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+
+/* Hero staggers its entrance; every other screen arrives as one. */
+.reveal-ready .hero h1.is-visible {
+  transition-delay: 60ms;
+}
+
+.reveal-ready .hero-lede.is-visible {
+  transition-delay: 130ms;
+}
+
+.reveal-ready .hero-cta.is-visible {
+  transition-delay: 200ms;
 }
 
 /* 11. Responsive — tablet (960) ---------------------------------------- */
