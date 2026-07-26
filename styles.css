@@ -48,7 +48,7 @@
   --on-ink-muted: rgba(242, 242, 242, 0.62);
   --bar-bg: rgba(233, 233, 233, 0.85);
   --container: 1120px;
-  --bar-h: 96px;
+  --bar-h: 72px;
   --screen-inset: calc(var(--bar-h) + 24px);
   --gutter: 24px;
   --font-sans: "Poppins", "Segoe UI", system-ui, sans-serif;
@@ -722,7 +722,7 @@ h2 {
   }
 
   :root {
-    --bar-h: 84px;
+    --bar-h: 64px;
     --screen-inset: calc(var(--bar-h) + 18px);
     --gutter: 18px;
   }
