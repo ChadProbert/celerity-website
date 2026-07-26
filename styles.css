@@ -657,19 +657,6 @@ h2 {
   transition: opacity 600ms var(--ease), transform 600ms var(--ease);
 }
 
-/* Hero staggers its entrance; every other screen arrives as one. */
-.reveal-ready .hero h1.is-visible {
-  transition-delay: 60ms;
-}
-
-.reveal-ready .hero-lede.is-visible {
-  transition-delay: 130ms;
-}
-
-.reveal-ready .hero-cta.is-visible {
-  transition-delay: 200ms;
-}
-
 /* 11. Responsive — tablet (960) ---------------------------------------- */
 
 @media (max-width: 960px) {
