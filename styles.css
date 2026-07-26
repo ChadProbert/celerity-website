@@ -484,11 +484,11 @@ h1 {
 
 /* 7. Showcase — product screenshot ------------------------------------- */
 
-/* Capped to the band between the two bars so the screenshot always fits one
-   screen without pushing the section past its snap point. */
+/* Capped to the band between the two bars so it always fits one screen
+   without pushing the section past its snap point. */
 .demo-image {
   width: auto;
-  max-width: 100%;
+  max-width: min(100%, 1000px);
   height: auto;
   max-height: calc(100dvh - var(--screen-inset) * 2 - 16px);
   margin-inline: auto;
