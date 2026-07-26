@@ -606,13 +606,6 @@ h2 {
   gap: 14px;
 }
 
-.closing-note {
-  margin: 0;
-  color: var(--on-ink-muted);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-}
-
 /* 9. Footer ------------------------------------------------------------ */
 
 /* Pinned to the bottom for the whole page, mirroring the header. */
