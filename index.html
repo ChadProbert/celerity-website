@@ -4,275 +4,133 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <title>Celerity: the keyboard-first new tab for Chrome</title>
     <meta
       name="description"
-      content="Celerity replaces Chrome's new tab with a quiet command surface: one letter opens a site, a few words search inside it, everything else falls through to the web."
+      content="Celerity replaces your new tab page with a minimal, keyboard-driven command launcher. Launch sites and search the web without lifting your hands from the keyboard."
     />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e9e9e9" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#222222" />
-    <meta property="og:title" content="Celerity — Type. Enter. There." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://getcelerity.app/" />
+    <meta property="og:title" content="Celerity: the keyboard-first new tab for Chrome " />
     <meta
       property="og:description"
-      content="The keyboard-first new tab for Chrome. One letter opens a site. A few words search inside it. Everything else falls through to the web."
+      content="A keyboard-first new tab for Chrome. Available now on Chrome Web Store."
     />
-    <meta property="og:type" content="website" />
-    <title>Celerity — The keyboard-first new tab for Chrome</title>
+    <meta property="og:image" content="https://getcelerity.app/assets/celerity-showcase-dark-mode.png" />
+    <meta property="og:image:width" content="2091" />
+    <meta property="og:image:height" content="1174" />
+    <meta property="og:image:alt" content="Celerity’s shortcut grid on a Chrome new tab, in dark and light themes." />
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <link
-      rel="icon"
-      id="favicon"
-      href="assets/tab-icon-light.svg"
-      type="image/svg+xml"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      href="assets/tab-icon.svg"
-      type="image/svg+xml"
-      media="(prefers-color-scheme: dark)"
-    />
+    <link rel="icon" id="favicon" href="assets/tab-icon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="assets/tab-icon.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
 
-    <link
-      rel="preload"
-      href="assets/poppins-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="assets/poppins-medium.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+    <link rel="preload" href="assets/poppins-bold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/poppins-medium.woff2" as="font" type="font/woff2" crossorigin />
 
     <script>
-      try {
-        const savedTheme = localStorage.getItem("celerity-theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme =
-          savedTheme === "dark" || savedTheme === "light"
-            ? savedTheme
-            : prefersDark
-              ? "dark"
-              : "light";
-      } catch {
-        document.documentElement.dataset.theme = "light";
-      }
-
-      // Armed before first paint, like the theme above, so the hero starts
-      // hidden rather than flashing in before its entrance runs.
-      if (
-        "IntersectionObserver" in window &&
-        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ) {
-        document.documentElement.classList.add("reveal-ready");
-      }
+      // Runs before first paint. A theme picked with the switch wins; otherwise
+      // the page follows the system's light or dark mode.
+      (() => {
+        let theme = null;
+        try {
+          theme = localStorage.getItem("celerity-theme");
+        } catch {}
+        if (theme !== "dark" && theme !== "light") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        const root = document.documentElement;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+      })();
     </script>
     <link rel="stylesheet" href="styles.css" />
     <script type="module" src="script.js"></script>
     <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
   </head>
-  <body id="top">
-    <a class="skip-link" href="#main-content">Skip to content</a>
-
-    <!-- Header -->
-    <header class="site-header" id="site-header">
-      <div class="header-inner">
-        <a class="brand" href="#top" aria-label="Celerity — back to top">
-          <svg class="brand-mark" viewBox="-6 -6 255 151" aria-hidden="true">
-            <path d="M46 5H238" />
-            <path d="M5 72H154" />
-            <path d="M34 134H238" />
-          </svg>
-          <span class="brand-name">Celerity</span>
+  <body>
+    <div class="app">
+      <header class="top-bar">
+        <a class="brand" href="/" aria-label="Celerity home">
+          <img class="mark-img mark-img--on-dark" src="assets/tab-icon.svg" width="243" height="139" alt="" />
+          <img class="mark-img mark-img--on-light" src="assets/tab-icon-light.svg" width="243" height="139" alt="" />
+          <span>Celerity</span>
         </a>
 
-        <div class="header-actions">
-          <button
-            class="theme-toggle"
-            id="theme-toggle"
-            type="button"
-            aria-label="Dark theme"
-            aria-pressed="false"
-            title="Switch theme (T)"
-          >
+        <div class="top-actions">
+          <a class="chip" href="https://github.com/ChadProbert/celerity" target="_blank" rel="noreferrer">
+            <svg class="chip-icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"
+              />
+            </svg>
+            <span>Star on GitHub</span>
+            <span class="chip-count" id="star-count" hidden></span>
+          </a>
+
+          <button class="theme-switch" type="button" id="theme-switch" aria-label="Switch to dark mode">
             <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20.2 15.2A8.4 8.4 0 0 1 8.8 3.8 8.4 8.4 0 1 0 20.2 15.2Z" />
             </svg>
             <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="3.4" />
-              <path
-                d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"
-              />
+              <circle cx="12" cy="12" r="3.6" />
+              <path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
             </svg>
           </button>
-
-          <a
-            class="button button--ink button--compact"
-            data-store-link
-            href="https://chromewebstore.google.com/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <svg class="chrome-glyph" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="9.25" />
-              <circle cx="12" cy="12" r="3.9" />
-              <path d="M21.17 8H12M3.95 6.06 8.54 14M10.88 21.94 15.46 14" />
-            </svg>
-            <span>Add to Chrome</span>
-          </a>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <main id="main-content" tabindex="-1">
-      <!-- Hero — the opening statement -->
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="shell hero-copy" data-reveal>
-          <svg class="brand-mark hero-mark" viewBox="-6 -6 255 151" aria-hidden="true">
-            <path d="M46 5H238" />
-            <path d="M5 72H154" />
-            <path d="M34 134H238" />
-          </svg>
-
-          <p class="hero-def">
-            <span class="def-word">ce·ler·i·ty</span>
-            <span class="def-ipa">/sə-ˈler-ə-tē/</span>
-            <span class="def-type">noun</span>
-            <span class="def-meaning">swiftness of movement</span>
-          </p>
-
+      <main class="stage">
+        <section class="hero" aria-labelledby="hero-title">
           <h1 id="hero-title">Type. Enter. There.</h1>
-
-          <p class="hero-lede">
-            Celerity replaces Chrome's new tab with a quiet command surface. One letter opens a
-            site. A few words search inside it. Everything else falls through to the web.
+          <p class="sub">
+            A minimal, keyboard-driven new tab for Chrome.
           </p>
-
-          <div class="hero-cta">
-            <a
-              class="button button--ink button--large"
-              data-store-link
-              href="https://chromewebstore.google.com/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <svg class="chrome-glyph" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="9.25" />
-                <circle cx="12" cy="12" r="3.9" />
-                <path d="M21.17 8H12M3.95 6.06 8.54 14M10.88 21.94 15.46 14" />
-              </svg>
-              <span>Add to Chrome</span>
-              <svg class="button-arrow" viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M4 10h11M11 5l5 5-5 5" />
-              </svg>
+          <p class="tagline">Built to disappear into your workflow</p>
+          <div class="actions">
+            <a class="button button--ink" href="https://github.com/ChadProbert/celerity" target="_blank" rel="noreferrer" data-install-link>
+              <span data-install-label>Get Celerity</span>
             </a>
-            <p class="hero-proof">
-              Free
-              <svg class="proof-tick" viewBox="0 0 15 10" aria-hidden="true">
-                <path d="M1 5.4 3.6 8 8.4 2M6.6 5.4 9.2 8 14 2" />
+            <a class="button" href="https://github.com/ChadProbert/celerity" target="_blank" rel="noreferrer">
+              <svg class="button-icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                  d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"
+                />
               </svg>
-              No account
-              <svg class="proof-tick" viewBox="0 0 15 10" aria-hidden="true">
-                <path d="M1 5.4 3.6 8 8.4 2M6.6 5.4 9.2 8 14 2" />
-              </svg>
-              Zero data collection
-              <svg class="proof-tick" viewBox="0 0 15 10" aria-hidden="true">
-                <path d="M1 5.4 3.6 8 8.4 2M6.6 5.4 9.2 8 14 2" />
-              </svg>
-            </p>
+              <span>Contribute</span>
+            </a>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Showcase — the product screenshot on its own screen -->
-      <section class="showcase-section" aria-label="Celerity on a new tab">
-        <div class="shell">
+        <figure class="shot">
           <img
-            class="demo-image"
-            src="assets/celerity-clean.png"
-            width="1292"
-            height="775"
+            class="shot-img shot-img--dark"
+            src="assets/celerity-showcase-dark-mode.webp"
+            width="2091"
+            height="1174"
             decoding="async"
-            data-reveal
-            alt="Celerity on a Chrome new tab: a grid of single-letter shortcuts — g for Gmail, y for YouTube, gh for GitHub, n for Netflix and eight more — above the Celerity wordmark."
+            alt="Celerity on a Chrome new tab in Celerity Dark: a grid of twelve shortcuts, g for Gmail, c for Claude, y for YouTube, gh for GitHub and more, with the word Celerity below. A second window in Celerity Light sits behind it."
           />
-        </div>
-      </section>
+          <img
+            class="shot-img shot-img--light"
+            src="assets/celerity-showcase-light-mode.webp"
+            width="2095"
+            height="1174"
+            decoding="async"
+            alt="Celerity on a Chrome new tab in Celerity Light: a grid of twelve shortcuts, g for Gmail, c for Claude, y for YouTube, gh for GitHub and more, with the word Celerity below. A second window in Celerity Dark sits behind it."
+          />
+        </figure>
+      </main>
 
-      <!-- Philosophy — the brand statement -->
-      <section class="philosophy-section" id="philosophy" aria-labelledby="philosophy-title">
-        <div class="shell philosophy-inner">
-          <header class="section-head section-head--center" data-reveal>
-            <p class="kicker">Philosophy</p>
-            <h2 id="philosophy-title">Speed is a form of respect.</h2>
-          </header>
-          <p class="philosophy-statement" data-reveal>
-            Most new tabs want to become destinations — feeds, widgets, weather, news.
-            <strong>Celerity believes a new tab is a doorway.</strong> Its only job is to close
-            behind you.
-          </p>
-          <dl class="tenets" data-reveal>
-            <div>
-              <dt>Quiet</dt>
-              <dd>No feeds. No widgets. Nothing to check.</dd>
-            </div>
-            <div>
-              <dt>Direct</dt>
-              <dd>Every interaction exists to move you onward.</dd>
-            </div>
-            <div>
-              <dt>Learnable</dt>
-              <dd>The more you use it, the less you see it.</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-
-      <!-- Closing CTA -->
-      <section class="closing-section" aria-labelledby="closing-title">
-        <div class="shell">
-          <div class="closing-card" data-reveal>
-            <div class="closing-copy">
-              <p class="closing-kicker"><span>chrome://</span>newtab</p>
-              <h2 id="closing-title">Make every new tab a head start.</h2>
-              <p>
-                Free, private, ready in seconds. Your setup stays on your machine and goes
-                wherever you take it.
-              </p>
-            </div>
-            <div class="closing-cta">
-              <a
-                class="button button--paper button--large"
-                data-store-link
-                href="https://chromewebstore.google.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <svg class="chrome-glyph" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9.25" />
-                  <circle cx="12" cy="12" r="3.9" />
-                  <path d="M21.17 8H12M3.95 6.06 8.54 14M10.88 21.94 15.46 14" />
-                </svg>
-                <span>Add to Chrome</span>
-                <svg class="button-arrow" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M4 10h11M11 5l5 5-5 5" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-      <div class="shell footer-inner">
-        <p class="footer-legal">© <span id="current-year">2026</span> Celerity</p>
-      </div>
-    </footer>
+      <footer class="bottom-bar">
+        <p>© <span id="year">2026</span> Celerity</p>
+      </footer>
+    </div>
   </body>
 </html>

@@ -1,127 +1,102 @@
-/* Celerity — site behavior
-   ------------------------
+/* Celerity — site behaviour
+   -------------------------
    1. Config
-   2. Theme — toggle, persistence, "T" shortcut
-   3. Favicon — follows the browser color scheme
-   4. Reveals — sections fade in on scroll
-   5. Footer year
+   2. Theme switch
+   3. GitHub stars
+   4. Small things
 */
 
 /* 1. Config ------------------------------------------------------------ */
 
-// Replace with Celerity's listing URL once published. The HTML anchors keep
-// the same URL as a no-JavaScript fallback.
-const CHROME_STORE_URL = "https://chromewebstore.google.com/";
+// Once Celerity is listed on the Chrome Web Store, put the listing URL here.
+// The main button then reads "Add to Chrome" and points at the listing.
+const CHROME_STORE_URL = "";
+const REPO_API = "https://api.github.com/repos/ChadProbert/celerity";
 
 const root = document.documentElement;
-const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-document.querySelectorAll("[data-store-link]").forEach((link) => {
-  link.href = CHROME_STORE_URL;
-});
+/* 2. Theme switch ------------------------------------------------------ */
 
-/* 2. Theme ------------------------------------------------------------- */
-
+// Follows the system until you use the switch; after that your choice sticks.
 const THEME_KEY = "celerity-theme";
-const themeToggle = document.getElementById("theme-toggle");
-const themeColorMetas = document.querySelectorAll('meta[name="theme-color"]');
+const THEME_GROUNDS = { dark: "#222222", light: "#e9e9e9" };
+const themeSwitch = document.getElementById("theme-switch");
+const themeMetas = document.querySelectorAll('meta[name="theme-color"]');
 
-let storedTheme = null;
-try {
-  storedTheme = localStorage.getItem(THEME_KEY);
-} catch {
-  storedTheme = null;
-}
+const savedTheme = () => {
+  try {
+    return localStorage.getItem(THEME_KEY);
+  } catch {
+    return null;
+  }
+};
 
-const resolveTheme = (saved, prefersDark) =>
-  saved === "dark" || saved === "light" ? saved : prefersDark ? "dark" : "light";
-
-const applyTheme = (theme, persist = false) => {
+function applyTheme(theme) {
+  // Repaint as one unit: transitions off for the frame the colours change.
+  root.classList.add("theme-snap");
   root.dataset.theme = theme;
   root.style.colorScheme = theme;
-  themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
-  themeColorMetas.forEach((meta) =>
-    meta.setAttribute("content", theme === "dark" ? "#222222" : "#e9e9e9"),
-  );
+  themeMetas.forEach((meta) => meta.setAttribute("content", THEME_GROUNDS[theme]));
+  themeSwitch.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} mode`);
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-snap")));
+}
 
-  if (persist) {
-    storedTheme = theme;
-    try {
-      localStorage.setItem(THEME_KEY, theme);
-    } catch {
-      /* private browsing — theme still applies for this visit */
-    }
+applyTheme(root.dataset.theme === "dark" ? "dark" : "light");
+
+themeSwitch.addEventListener("click", () => {
+  const next = root.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try {
+    localStorage.setItem(THEME_KEY, next);
+  } catch {
+    /* private browsing: the switch still works for this visit */
   }
-};
-
-const toggleTheme = () => {
-  applyTheme(root.dataset.theme === "dark" ? "light" : "dark", true);
-};
-
-applyTheme(resolveTheme(storedTheme, systemTheme.matches));
-
-themeToggle?.addEventListener("click", toggleTheme);
-
-systemTheme.addEventListener("change", (event) => {
-  if (!storedTheme) applyTheme(resolveTheme(null, event.matches));
 });
 
-document.addEventListener("keydown", (event) => {
-  if (event.key !== "t" && event.key !== "T") return;
-  if (event.metaKey || event.ctrlKey || event.altKey || event.defaultPrevented) return;
-  const target = event.target;
-  if (
-    target instanceof Element &&
-    target.closest("a, button, input, textarea, select, [contenteditable]")
-  ) {
-    return;
-  }
-  toggleTheme();
+systemDark.addEventListener("change", (event) => {
+  const saved = savedTheme();
+  if (saved !== "dark" && saved !== "light") applyTheme(event.matches ? "dark" : "light");
 });
 
-/* 3. Favicon ----------------------------------------------------------- */
+/* 3. GitHub stars ------------------------------------------------------ */
 
-// The tab strip is drawn by the browser, so the icon follows the browser's
-// color scheme rather than the site theme.
+// The count is a nicety: if the API is slow, rate-limited or offline, the
+// button simply shows no number.
+fetch(REPO_API, { headers: { Accept: "application/vnd.github+json" } })
+  .then((response) => (response.ok ? response.json() : null))
+  .then((repo) => {
+    if (!repo || typeof repo.stargazers_count !== "number") return;
+    const count = document.getElementById("star-count");
+    count.textContent = new Intl.NumberFormat("en", { notation: "compact" }).format(repo.stargazers_count);
+    count.hidden = false;
+  })
+  .catch(() => {});
+
+/* 4. Small things ------------------------------------------------------ */
+
+if (CHROME_STORE_URL) {
+  document.querySelectorAll("[data-install-link]").forEach((link) => {
+    link.href = CHROME_STORE_URL;
+    const label = link.querySelector("[data-install-label]");
+    if (label) label.textContent = "Add to Chrome";
+  });
+}
+
+// The tab strip is drawn by the browser, so the favicon follows the
+// browser's colour scheme rather than this page's theme.
 const favicon = document.getElementById("favicon");
 if (favicon) {
   document.querySelectorAll('link[rel="icon"]').forEach((link) => {
     if (link !== favicon) link.remove();
   });
   favicon.removeAttribute("media");
-
   const applyFavicon = () => {
-    favicon.href = systemTheme.matches
-      ? "assets/tab-icon.svg"
-      : "assets/tab-icon-light.svg";
+    favicon.href = systemDark.matches ? "assets/tab-icon.svg" : "assets/tab-icon-light.svg";
   };
-
   applyFavicon();
-  systemTheme.addEventListener("change", applyFavicon);
+  systemDark.addEventListener("change", applyFavicon);
 }
 
-/* 4. Reveals ----------------------------------------------------------- */
-
-const revealItems = document.querySelectorAll("[data-reveal]");
-if (reducedMotion.matches || !("IntersectionObserver" in window)) {
-  revealItems.forEach((item) => item.classList.add("is-visible"));
-} else {
-  // Toggled rather than one-shot: items reset as their screen leaves the
-  // viewport, so every section replays its entrance on the way back too.
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle("is-visible", entry.isIntersecting);
-      });
-    },
-    { rootMargin: "0px 0px -6%", threshold: 0.1 },
-  );
-
-  revealItems.forEach((item) => revealObserver.observe(item));
-}
-
-/* 5. Footer year ------------------------------------------------------- */
-
-const year = document.getElementById("current-year");
+const year = document.getElementById("year");
 if (year) year.textContent = String(new Date().getFullYear());

@@ -1,25 +1,26 @@
 /* Celerity — stylesheet
    ---------------------
-   1. Fonts and design tokens
-   2. Base and utilities
-   3. Header
-   4. Buttons
-   5. Shared type (headings, kickers, keycaps)
+   One screen, no scroll: a top bar, the pitch, the product, a copyright
+   line. Greys, Poppins and the hairline borders come from the extension.
+
+   1. Fonts
+   2. Themes
+   3. Base
+   4. App frame (the one screen)
+   5. Top bar
    6. Hero
-   7. Demo — browser frame and recreated new tab
-   8. Content sections (how / yours / philosophy / closing)
-   9. Footer
-   10. Motion (entrances, reveals)
-   11. Responsive (960 / 760 / 480)
-   12. Reduced motion
+   7. Buttons
+   8. Showcase
+   9. Bottom bar
+   10. Small screens
+   11. Reduced motion
 */
 
-/* 1. Fonts and design tokens ------------------------------------------- */
+/* 1. Fonts ------------------------------------------------------------- */
 
 @font-face {
   font-family: "Poppins";
   src: url("assets/poppins-regular.woff2") format("woff2");
-  font-style: normal;
   font-weight: 400;
   font-display: swap;
 }
@@ -27,53 +28,53 @@
 @font-face {
   font-family: "Poppins";
   src: url("assets/poppins-medium.woff2") format("woff2");
-  font-style: normal;
   font-weight: 500;
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Poppins";
+  src: url("assets/poppins-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* 2. Themes ------------------------------------------------------------ */
+
+/* The extension's light and dark grounds, with text greys nudged to
+   readable contrast. */
 :root {
-  --bg: #e9e9e9;
-  --surface: #e1e1e1;
-  --raised: #f3f3f2;
-  --quiet: rgba(17, 17, 17, 0.04);
-  --text: #131313;
-  --muted: #565656;
-  --faint: #8b8b8b;
-  --tick: #16a34a;
-  --line: rgba(17, 17, 17, 0.12);
-  --line-strong: rgba(17, 17, 17, 0.24);
-  --ink: #161616;
-  --on-ink: #f2f2f2;
-  --on-ink-muted: rgba(242, 242, 242, 0.62);
-  --bar-bg: rgba(233, 233, 233, 0.85);
-  --container: 1120px;
-  --bar-h: 72px;
-  --screen-inset: calc(var(--bar-h) + 24px);
-  --gutter: 24px;
-  --font-sans: "Poppins", "Segoe UI", system-ui, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ground: #e9e9e9;
+  --ink: #000000;
+  --prose: #555555;
+  --muted: #6b6b6b;
+  --raised: #e1e1e1;
+  --line: rgba(0, 0, 0, 0.14);
+  --line-strong: rgba(0, 0, 0, 0.28);
+
+  --sans: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --speed: 160ms;
+  --gutter: clamp(1rem, 3vw, 2rem);
 }
 
 :root[data-theme="dark"] {
-  --bg: #222222;
-  --surface: #1d1d1d;
-  --raised: #292929;
-  --quiet: rgba(255, 255, 255, 0.05);
-  --text: #f2f2f2;
-  --muted: #a5a5a5;
-  --faint: #737373;
-  --tick: #4ade80;
-  --line: rgba(255, 255, 255, 0.11);
-  --line-strong: rgba(255, 255, 255, 0.22);
-  --ink: #f2f2f2;
-  --on-ink: #1a1a1a;
-  --on-ink-muted: rgba(26, 26, 26, 0.6);
-  --bar-bg: rgba(34, 34, 34, 0.85);
+  --ground: #222222;
+  --ink: #ffffff;
+  --prose: #a3a3a3;
+  --muted: #8e8e8e;
+  --raised: #2a2a2a;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.24);
 }
 
-/* 2. Base and utilities ------------------------------------------------ */
+/* A theme swap repaints as one unit, as it does in the extension. */
+.theme-snap *,
+.theme-snap *::before,
+.theme-snap *::after {
+  transition: none !important;
+}
+
+/* 3. Base -------------------------------------------------------------- */
 
 *,
 *::before,
@@ -81,24 +82,22 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--ground);
+  color: var(--ink);
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  overflow-x: hidden;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.65;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  transition: background-color 280ms ease, color 280ms ease;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img,
@@ -108,658 +107,377 @@ svg {
 
 a {
   color: inherit;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
 }
 
 button {
-  color: inherit;
   font: inherit;
+  color: inherit;
+}
+
+h1,
+p,
+figure {
+  margin: 0;
 }
 
 ::selection {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--ink);
+  color: var(--ground);
 }
 
 :focus-visible {
-  outline: 2px solid var(--text);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
-.shell {
-  width: min(calc(100% - var(--gutter) * 2), var(--container));
-  margin-inline: auto;
-}
+/* 4. App frame --------------------------------------------------------- */
 
-/* Every section is one screen with its content centred, and the page snaps
-   to whichever screen the scroll lands nearest. The inset clears the fixed
-   bars top and bottom, so content centres in the band between them. */
-main > section {
+/* The whole site is one viewport tall: bars at the edges, and the stage
+   between them sharing out whatever height is left. */
+.app {
   display: grid;
-  place-items: center;
-  min-height: 100dvh;
-  padding-block: var(--screen-inset);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100dvh;
 }
 
-.skip-link {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 100;
-  padding: 10px 14px;
-  transform: translateY(-160%);
-  border-radius: 8px;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: transform 180ms ease;
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-}
-
-/* 3. Header ------------------------------------------------------------ */
-
-/* Header and footer are fixed furniture: always pinned, always opaque. Height
-   sits on the bar itself so the two match exactly — both driven by --bar-h. */
-.site-header {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 50;
-  display: grid;
+.stage {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: var(--bar-h);
-  background: var(--bar-bg);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
-  transition: background-color 280ms ease;
+  gap: clamp(1.25rem, 3.5vh, 2.5rem);
+  min-height: 0;
+  padding: clamp(1.25rem, 5vh, 3.5rem) var(--gutter) clamp(0.75rem, 2vh, 1.25rem);
 }
 
-/* Full-bleed rather than shell-constrained, so the brand and actions sit at
-   the screen edges. The gutter matches .shell's so the inset stays in step. */
-.header-inner {
-  display: grid;
-  grid-template-columns: 1fr auto;
+/* 5. Top bar ----------------------------------------------------------- */
+
+.top-bar {
+  display: flex;
   align-items: center;
-  gap: 24px;
-  padding-inline: var(--gutter);
+  justify-content: space-between;
+  gap: 1rem;
+  height: 56px;
+  padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--line);
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  justify-self: start;
-  gap: 11px;
-  width: max-content;
-  border-radius: 8px;
-  font-size: 1.02rem;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  text-decoration: none;
-}
-
-.brand-mark {
-  width: 26px;
-  height: auto;
-  overflow: visible;
-  flex: 0 0 auto;
-}
-
-.brand-mark path {
-  stroke: currentColor;
-  stroke-width: 16;
-  stroke-linecap: round;
-  fill: none;
-}
-
-.header-actions {
   display: flex;
   align-items: center;
-  justify-self: end;
   gap: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-.theme-toggle {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  background: transparent;
-  cursor: pointer;
-  transition: background-color 160ms ease, border-color 160ms ease;
+.mark-img {
+  width: 22px;
+  height: auto;
 }
 
-.theme-toggle:hover {
-  border-color: var(--line-strong);
-  background: var(--quiet);
-}
-
-.theme-icon {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
-}
-
-.theme-icon--sun,
-[data-theme="dark"] .theme-icon--moon {
+.mark-img--on-light,
+:root[data-theme="light"] .mark-img--on-dark {
   display: none;
 }
 
-[data-theme="dark"] .theme-icon--sun {
+:root[data-theme="light"] .mark-img--on-light {
   display: block;
 }
 
-/* 4. Buttons ----------------------------------------------------------- */
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Small bordered controls, sized to each other. */
+.chip,
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--prose);
+  font-size: 0.8125rem;
+  transition:
+    color var(--speed),
+    border-color var(--speed),
+    background-color var(--speed);
+}
+
+.chip {
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.chip:hover,
+.theme-switch:hover {
+  border-color: var(--line-strong);
+  background: var(--raised);
+  color: var(--ink);
+}
+
+.chip-icon {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.chip-count {
+  padding-left: 8px;
+  border-left: 1px solid var(--line);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.theme-switch {
+  justify-content: center;
+  width: 32px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.theme-icon {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The icon shows the mode you'd switch to. */
+.theme-icon--sun,
+:root[data-theme="dark"] .theme-icon--moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-icon--sun {
+  display: block;
+}
+
+/* 6. Hero -------------------------------------------------------------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+  max-width: 44rem;
+  text-align: center;
+}
+
+/* The one editorial note on the page: a serif italic against the Poppins. */
+.tagline {
+  margin-top: clamp(2rem, 6vh, 3.75rem);
+  color: var(--prose);
+  font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 1.2rem + 3.6vw + 1.5vh, 4.75rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.sub {
+  max-width: 34rem;
+  margin-top: clamp(0.75rem, 2vh, 1.25rem);
+  color: var(--prose);
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.0625rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: clamp(1rem, 3vh, 1.75rem);
+}
+
+/* 7. Buttons ----------------------------------------------------------- */
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  font-weight: 500;
-  line-height: 1;
-  text-decoration: none;
-  cursor: pointer;
-  /* Not --ease here: that curve is nearly all travelled in its first moments,
-     which makes a hover scale read as a pop. This one eases in and out, so the
-     button grows gradually from rest. */
-  transition: background-color 160ms ease, transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
-  /* Own compositing layer, so the scale below is interpolated on the GPU
-     instead of re-rasterising the label and icons on every frame. */
-  will-change: transform;
+  height: 40px;
+  padding: 0 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: 0.875rem;
+  transition:
+    background-color var(--speed),
+    border-color var(--speed),
+    color var(--speed);
 }
 
-/* Hover first, so the press below still wins while the button is held. */
+.button {
+  gap: 8px;
+}
+
+.button-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
 .button:hover {
-  transform: scale(1.025);
-}
-
-/* The press stays quick — a gradual squish would feel unresponsive. */
-.button:active {
-  transform: translateY(1px) scale(0.99);
-  transition-duration: 110ms;
+  border-color: var(--ink);
+  background: var(--raised);
 }
 
 .button--ink {
+  border-color: var(--ink);
   background: var(--ink);
-  color: var(--on-ink);
+  color: var(--ground);
 }
 
-.button--paper {
-  background: var(--bg);
-  color: var(--text);
+.button--ink:hover {
+  background: color-mix(in srgb, var(--ink) 84%, var(--ground));
 }
 
-.button--compact {
-  min-height: 38px;
-  padding: 0 16px;
-  font-size: 0.82rem;
-}
+/* 8. Showcase ---------------------------------------------------------- */
 
-.button--large {
-  min-height: 52px;
-  padding: 0 24px;
-  font-size: 0.95rem;
-}
-
-.chrome-glyph {
-  width: 17px;
-  height: 17px;
-  flex: 0 0 auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-}
-
-.button--large .chrome-glyph {
-  width: 19px;
-  height: 19px;
-}
-
-.button-arrow {
-  width: 17px;
-  height: 17px;
-  margin-left: 2px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
-}
-
-/* 5. Shared type — headings, kickers, keycaps -------------------------- */
-
-h1,
-h2,
-h3,
-p {
-  text-wrap: pretty;
-}
-
-h1,
-h2,
-h3 {
-  margin-top: 0;
-  color: var(--text);
-  font-weight: 500;
-}
-
-.kicker {
-  margin: 0 0 18px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-kbd {
-  display: inline-flex;
-  align-items: center;
+/* Takes whatever height the hero leaves and fits the screenshot inside it,
+   never wider than 1000px. The front window's page matches the page grey,
+   so the grid reads as sitting on the site. */
+.shot {
+  display: flex;
   justify-content: center;
-  min-width: 24px;
-  min-height: 24px;
-  padding: 2px 7px;
-  border: 1px solid var(--line-strong);
-  border-radius: 6px;
-  background: var(--raised);
-  box-shadow: inset 0 -1.5px 0 var(--line);
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  line-height: 1;
-  white-space: nowrap;
+  flex: 1 1 0;
+  width: 100%;
+  min-height: 0;
 }
 
-/* 6. Hero -------------------------------------------------------------- */
-
-.hero-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.hero-mark {
-  width: clamp(70px, 10vw, 104px);
-  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
-}
-
-.hero-def {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: 6px 14px;
-  margin: 0 0 26px;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
-
-.def-word {
-  color: var(--text);
-}
-
-.def-ipa,
-.def-type {
-  color: var(--faint);
-}
-
-.def-meaning {
-  color: var(--muted);
-}
-
-.def-meaning::before {
-  content: "— ";
-  color: var(--faint);
-}
-
-h1 {
-  margin-bottom: 26px;
-  font-size: clamp(3.4rem, 8vw, 6.2rem);
-  letter-spacing: -0.045em;
-  line-height: 1.02;
-}
-
-.hero-lede {
-  max-width: 620px;
-  margin: 0 0 38px;
-  color: var(--muted);
-  font-size: clamp(1.04rem, 1.5vw, 1.17rem);
-  line-height: 1.7;
-}
-
-.hero-cta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.hero-proof {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 4px 8px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
-
-.proof-tick {
-  width: 15px;
-  height: 10px;
-  flex: 0 0 auto;
-  fill: none;
-  stroke: var(--tick);
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* 7. Showcase — product screenshot ------------------------------------- */
-
-/* Capped to the band between the two bars so it always fits one screen
-   without pushing the section past its snap point. */
-.demo-image {
+.shot-img {
   width: auto;
   max-width: min(100%, 1000px);
-  height: auto;
-  max-height: calc(100dvh - var(--screen-inset) * 2 - 16px);
-  margin-inline: auto;
+  height: 100%;
+  object-fit: contain;
+  object-position: top center;
+  /* drop-shadow follows the windows' outline, so the image's transparent
+     corners don't cast a rectangle. */
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.18)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
 }
 
-/* 8. Content sections -------------------------------------------------- */
-
-.section-head {
-  max-width: 700px;
+:root[data-theme="dark"] .shot-img {
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.5)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
 }
 
-.section-head--center {
-  margin-inline: auto;
-  text-align: center;
+.shot-img--light,
+:root[data-theme="light"] .shot-img--dark {
+  display: none;
 }
 
-h2 {
-  margin-bottom: 20px;
-  font-size: clamp(2.05rem, 3.8vw, 3.15rem);
-  letter-spacing: -0.035em;
-  line-height: 1.08;
+:root[data-theme="light"] .shot-img--light {
+  display: block;
 }
 
-/* philosophy */
+/* Side by side on wide screens: copy on the left, the screenshot on the
+   right, both centred in the height between the bars. */
+@media (min-width: 900px) {
+  .stage {
+    flex-direction: row;
+    justify-content: center;
+    gap: clamp(2rem, 4vw, 4.5rem);
+    padding-block: clamp(1.5rem, 4vh, 3rem);
+  }
 
-.philosophy-statement {
-  max-width: 720px;
-  margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
-  color: var(--muted);
-  font-size: clamp(1.3rem, 2.5vw, 1.85rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.5;
-  text-align: center;
+  .hero {
+    flex: 0 1 30rem;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .shot {
+    flex: 0 1 auto;
+    width: auto;
+    height: 100%;
+    max-height: 640px;
+    align-items: center;
+  }
+
+  .shot-img {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    max-height: 100%;
+  }
 }
 
-.philosophy-statement strong {
-  color: var(--text);
-  font-weight: 500;
-}
+/* 9. Bottom bar -------------------------------------------------------- */
 
-.tenets {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  max-width: 880px;
-  margin: clamp(3.5rem, 6vw, 5rem) auto 0;
-  border-top: 1px solid var(--line);
-}
-
-.tenets div {
-  padding: 28px 28px 0;
-  border-right: 1px solid var(--line);
-  text-align: center;
-}
-
-.tenets div:first-child {
-  padding-left: 0;
-}
-
-.tenets div:last-child {
-  padding-right: 0;
-  border-right: 0;
-}
-
-.tenets dt {
-  margin-bottom: 8px;
-  font-size: 0.98rem;
-  font-weight: 500;
-}
-
-.tenets dd {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.84rem;
-}
-
-/* closing */
-
-
-.closing-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(2.5rem, 5vw, 4rem);
-  align-items: end;
-  padding: clamp(2.75rem, 5.5vw, 4.5rem);
-  border-radius: 22px;
-  background: var(--ink);
-  color: var(--on-ink);
-}
-
-.closing-kicker {
-  margin: 0 0 20px;
-  color: var(--on-ink);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-}
-
-.closing-kicker span {
-  color: var(--on-ink-muted);
-}
-
-.closing-card h2 {
-  max-width: 560px;
-  margin-bottom: 16px;
-  color: inherit;
-  font-size: clamp(1.9rem, 3.4vw, 2.85rem);
-}
-
-.closing-copy > p:last-child {
-  max-width: 480px;
-  margin: 0;
-  color: var(--on-ink-muted);
-  font-size: 0.95rem;
-}
-
-.closing-cta {
+.bottom-bar {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-/* 9. Footer ------------------------------------------------------------ */
-
-/* Pinned to the bottom for the whole page, mirroring the header. */
-.site-footer {
-  position: fixed;
-  inset: auto 0 0;
-  z-index: 50;
-  display: grid;
   align-items: center;
-  min-height: var(--bar-h);
-  background: var(--bar-bg);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
-  transition: background-color 280ms ease;
-}
-
-.footer-inner {
-  display: grid;
-  place-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 var(--gutter);
+  border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
 }
 
-.footer-legal {
-  margin: 0;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
+/* 10. Small screens ---------------------------------------------------- */
 
-/* 10. Motion — entrances and reveals ----------------------------------- */
-
-/* The transition lives on the visible state only, so arriving animates but
-   leaving resets instantly — a screen scrolled back to is always ready to
-   play again rather than caught mid fade-out. */
-.reveal-ready [data-reveal] {
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-.reveal-ready [data-reveal].is-visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
-}
-
-/* 11. Responsive — tablet (960) ---------------------------------------- */
-
-@media (max-width: 960px) {
-  .closing-card {
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-}
-
-/* 11. Responsive — mobile (760, 480) ----------------------------------- */
-
-@media (max-width: 760px) {
-
-  .header-inner {
-    gap: 12px;
-  }
-
-
-  h1 {
-    margin-bottom: 22px;
-    font-size: clamp(3rem, 14vw, 4.5rem);
-  }
-
-  .hero-lede {
-    font-size: 1rem;
-  }
-
-  .tenets {
-    grid-template-columns: 1fr;
-    text-align: left;
-  }
-
-  .tenets div,
-  .tenets div:first-child,
-  .tenets div:last-child {
-    padding: 22px 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    text-align: left;
-  }
-
-  .tenets div:last-child {
-    border-bottom: 0;
-  }
-
-  .closing-card {
-    border-radius: 16px;
-  }
-
-  :root {
-    --bar-h: 64px;
-    --screen-inset: calc(var(--bar-h) + 18px);
-    --gutter: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .brand-name {
+@media (max-width: 520px) {
+  .chip span:not(.chip-count) {
     display: none;
   }
 
-  .button--compact {
-    padding: 0 13px;
-    font-size: 0.78rem;
-  }
-
-  .button--large {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .closing-card {
-    padding: 30px 22px;
+  .chip {
+    padding: 0 9px;
   }
 }
 
-/* Mandatory snapping puts anything taller than the screen out of reach, so it
-   is dropped where a screen is too short to hold a section outright. */
-@media (max-height: 700px) {
-  html {
-    scroll-snap-type: none;
+/* Too short to hold everything without clipping: let it scroll rather than
+   cut the buttons off. */
+@media (max-height: 520px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
+  .app {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .shot {
+    flex: none;
+  }
+
+  .shot-img {
+    height: auto;
   }
 }
 
-/* 12. Reduced motion --------------------------------------------------- */
+/* 11. Reduced motion --------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-    scroll-snap-type: none;
-  }
-
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .reveal-ready [data-reveal] {
-    opacity: 1;
-    transform: none;
   }
 }
