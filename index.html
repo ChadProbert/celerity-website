@@ -49,22 +49,30 @@
         </div>
       </div>
 
-      <picture class="showcase">
-        <source
-          media="(prefers-color-scheme: dark)"
-          srcset="assets/celerity-showcase-dark-mode.webp"
-          width="2091"
-          height="1174"
-        />
-        <img
-          src="assets/celerity-showcase-light-mode.webp"
-          width="2095"
-          height="1174"
-          fetchpriority="high"
-          decoding="async"
-          alt="A showcase of Celerity's interface."
-        />
-      </picture>
+      <a
+        class="showcase"
+        id="showcase"
+        href="assets/celerity-showcase-light-mode.webp"
+        target="_blank"
+        rel="noopener"
+      >
+        <picture>
+          <source
+            media="(prefers-color-scheme: dark)"
+            srcset="assets/celerity-showcase-dark-mode.webp"
+            width="2091"
+            height="1174"
+          />
+          <img
+            src="assets/celerity-showcase-light-mode.webp"
+            width="2095"
+            height="1174"
+            fetchpriority="high"
+            decoding="async"
+            alt="A showcase of Celerity's interface."
+          />
+        </picture>
+      </a>
 
       <nav class="project" aria-label="Project">
         <ul class="links">

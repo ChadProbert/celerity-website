@@ -23,3 +23,12 @@ const applyFavicon = () => {
 };
 applyFavicon();
 systemDark.addEventListener("change", applyFavicon);
+
+// Showcase link opens whichever image the colour scheme is showing
+const showcase = document.getElementById("showcase");
+const showcaseImage = showcase.querySelector("img");
+const applyShowcaseLink = () => {
+  if (showcaseImage.currentSrc) showcase.href = showcaseImage.currentSrc;
+};
+applyShowcaseLink();
+showcaseImage.addEventListener("load", applyShowcaseLink);
