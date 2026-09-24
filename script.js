@@ -4,7 +4,6 @@ const root = document.documentElement;
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 const THEME_KEY = "celerity-theme";
-const THEME_GROUNDS = { dark: "#222222", light: "#e9e9e9" };
 const themeSwitch = document.getElementById("theme-switch");
 const themeMetas = document.querySelectorAll('meta[name="theme-color"]');
 
@@ -19,13 +18,13 @@ const savedTheme = () => {
 function applyTheme(theme) {
   root.classList.add("theme-snap");
   root.dataset.theme = theme;
-  root.style.colorScheme = theme;
-  themeMetas.forEach((meta) => meta.setAttribute("content", THEME_GROUNDS[theme]));
+  const ground = getComputedStyle(root).getPropertyValue("--ground").trim();
+  themeMetas.forEach((meta) => meta.setAttribute("content", ground));
   themeSwitch.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} mode`);
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-snap")));
 }
 
-applyTheme(root.dataset.theme === "dark" ? "dark" : "light");
+applyTheme(root.dataset.theme);
 
 themeSwitch.addEventListener("click", () => {
   const next = root.dataset.theme === "dark" ? "light" : "dark";
@@ -53,17 +52,14 @@ fetch(MANIFEST_URL)
   })
   .catch(() => {});
 
-
 // Favicon follows the browser's colour scheme.
 const favicon = document.getElementById("favicon");
-if (favicon) {
-  document.querySelectorAll('link[rel="icon"]').forEach((link) => {
-    if (link !== favicon) link.remove();
-  });
-  favicon.removeAttribute("media");
-  const applyFavicon = () => {
-    favicon.href = systemDark.matches ? "assets/tab-icon.svg" : "assets/tab-icon-light.svg";
-  };
-  applyFavicon();
-  systemDark.addEventListener("change", applyFavicon);
-}
+document.querySelectorAll('link[rel="icon"]').forEach((link) => {
+  if (link !== favicon) link.remove();
+});
+favicon.removeAttribute("media");
+const applyFavicon = () => {
+  favicon.href = systemDark.matches ? "assets/tab-icon.svg" : "assets/tab-icon-light.svg";
+};
+applyFavicon();
+systemDark.addEventListener("change", applyFavicon);
