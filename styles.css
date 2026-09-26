@@ -210,6 +210,10 @@ h1 {
   background: color-mix(in oklab, #a8c7fa 88%, currentColor);
 }
 
+.button:active {
+  background: color-mix(in oklab, #a8c7fa 76%, currentColor);
+}
+
 .release {
   color: var(--muted);
   font-size: 0.75rem;
