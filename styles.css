@@ -188,12 +188,9 @@ h1 {
   height: auto;
 }
 
-.project {
-  margin-top: 1rem;
-}
-
 .install {
   display: flex;
+  margin-top: 1rem;
   align-items: center;
   gap: 0.75rem;
 }
