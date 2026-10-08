@@ -28,3 +28,36 @@ const applyShowcaseLink = () => {
 };
 applyShowcaseLink();
 showcaseImage.addEventListener("load", applyShowcaseLink);
+
+// Theme switch
+const root = document.documentElement;
+const darkSource = showcase.querySelector("source");
+const themeColors = document.querySelectorAll('meta[name="theme-color"]');
+const applyTheme = (theme) => {
+  root.dataset.theme = theme;
+  darkSource.media = theme === "dark" ? "all" : "not all";
+  themeColors.forEach((meta) => {
+    meta.content = theme === "dark" ? "#222222" : "#e9e9e9";
+  });
+};
+const savedTheme = () => {
+  try {
+    return localStorage.getItem("theme");
+  } catch {
+    return null;
+  }
+};
+applyTheme(root.dataset.theme);
+
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  const theme = root.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(theme);
+  try {
+    localStorage.setItem("theme", theme);
+  } catch {}
+});
+
+// Defaults to system preference
+systemDark.addEventListener("change", () => {
+  if (!savedTheme()) applyTheme(systemDark.matches ? "dark" : "light");
+});

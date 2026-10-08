@@ -14,26 +14,21 @@
 
 :root {
   color-scheme: light dark;
-  --ground: #dcdcdc;
-  --glow: #ffffff;
-  --ink: #000000;
-  --prose: #555555;
-  --muted: #595959;
-  --showcase-shadow: drop-shadow(0 18px 12px rgba(0, 0, 0, 0.14)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.08));
+  --ground: light-dark(#E1E1E1, #1F1F1F);
+  --ink: light-dark(#000000, #ffffff);
+  --prose: light-dark(#555555, #a3a3a3);
+  --muted: light-dark(#595959, #9a9a9a);
 
   --sans: "Poppins", "Segoe UI", system-ui, sans-serif;
   --speed: 160ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ground: #222222;
-    --glow: #303030;
-    --ink: #ffffff;
-    --prose: #a3a3a3;
-    --muted: #9a9a9a;
-    --showcase-shadow: drop-shadow(0 18px 12px rgba(0, 0, 0, 0.45)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.3));
-  }
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 * {
@@ -43,16 +38,6 @@
 html {
   background: var(--ground);
   color: var(--ink);
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--glow), var(--ground));
-  pointer-events: none;
-  will-change: transform;
 }
 
 body {
@@ -162,6 +147,27 @@ h1 {
   color: var(--ink);
 }
 
+.theme-toggle {
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.theme-option {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+}
+
+/* The switch offers whichever theme isn't showing */
+:root[data-theme="dark"] .theme-option-dark,
+:root:not([data-theme="dark"]) .theme-option-light {
+  display: none;
+}
+
 .link-icon {
   width: 14px;
   height: 14px;
@@ -180,7 +186,6 @@ h1 {
 .showcase img {
   width: 100%;
   height: auto;
-  filter: var(--showcase-shadow);
 }
 
 .project {
