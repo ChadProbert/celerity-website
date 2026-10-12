@@ -4,7 +4,13 @@
 // The extension can't fetch Google's suggestions itself. Manifest V3 bans
 // remote scripts, and Google's endpoint sends no CORS headers. This function
 // fetches them and hands back plain JSON, which the extension may read
-// without any extra permission. Queries are never logged or stored.
+// without any extra permission. This code never logs or stores queries
+// (Vercel's own request logs, kept for about an hour, may include URLs).
+
+// Edge runs the function in the Vercel region nearest each user. Google
+// picks local suggestions mainly from the caller's location, so a single
+// fixed region gives everyone that region's suggestions.
+export const config = { runtime: "edge" };
 
 const GOOGLE_SUGGEST_URL = "https://suggestqueries.google.com/complete/search";
 const MAX_QUERY_LENGTH = 100;
@@ -31,7 +37,11 @@ function reply(request, suggestions, status, cacheControl) {
   return new Response(JSON.stringify(suggestions), { status, headers });
 }
 
-export async function GET(request) {
+export default async function handler(request) {
+  if (request.method !== "GET") {
+    return new Response(null, { status: 405, headers: { Allow: "GET" } });
+  }
+
   // Browsers always send an Origin here. Turn other sites away before
   // spending a call to Google that they couldn't read anyway.
   const origin = request.headers.get("origin");
@@ -42,8 +52,8 @@ export async function GET(request) {
   if (!query) return reply(request, [], 400, "no-store");
 
   const language = params.get("hl") ?? "";
-  // Vercel sets the visitor's country. Passing it on keeps suggestions
-  // local, because the function itself may run in another country.
+  // Vercel sets the visitor's country. Passing it on as a hint helps when
+  // the nearest region is in another country.
   const country = request.headers.get("x-vercel-ip-country") ?? "";
 
   const upstream = new URL(GOOGLE_SUGGEST_URL);
@@ -55,8 +65,13 @@ export async function GET(request) {
   });
   if (COUNTRY.test(country)) upstream.searchParams.set("gl", country);
 
+  // A plain timer rather than AbortSignal.timeout(), which the Edge runtime
+  // doesn't list as supported.
+  const timeout = new AbortController();
+  const timer = setTimeout(() => timeout.abort(), 2000);
+
   try {
-    const response = await fetch(upstream, { signal: AbortSignal.timeout(2000) });
+    const response = await fetch(upstream, { signal: timeout.signal });
     if (!response.ok) return reply(request, [], 502, "no-store");
 
     const [, suggestions] = await response.json();
@@ -68,5 +83,7 @@ export async function GET(request) {
   } catch {
     // Timeout or bad reply. Search still works without suggestions.
     return reply(request, [], 502, "no-store");
+  } finally {
+    clearTimeout(timer);
   }
 }
