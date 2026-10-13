@@ -13,22 +13,14 @@
 }
 
 :root {
-  color-scheme: light dark;
-  --ground: light-dark(#E1E1E1, #1F1F1F);
-  --ink: light-dark(#000000, #ffffff);
-  --prose: light-dark(#404040, #bdbdbd);
-  --muted: light-dark(#595959, #9a9a9a);
+  color-scheme: dark;
+  --ground: #1F1F1F;
+  --ink: #ffffff;
+  --prose: #bdbdbd;
+  --muted: #9a9a9a;
 
   --sans: "Poppins", "Segoe UI", system-ui, sans-serif;
   --speed: 160ms;
-}
-
-:root[data-theme="light"] {
-  color-scheme: light;
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
 }
 
 * {
@@ -48,11 +40,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* The ground colour shows through until the image loads */
-  background: url("assets/celerity-background-light.webp") center / cover no-repeat;
-}
-
-:root[data-theme="dark"] body {
-  background-image: url("assets/celerity-background-dark.webp");
+  background: url("assets/celerity-background-dark.webp") center / cover no-repeat;
 }
 
 img,
@@ -160,35 +148,11 @@ h1 {
   color: var(--ink);
 }
 
-/* Two by two on phones, so no link is left alone on a second line */
-@media (max-width: 31rem) {
+/* Tighter on the narrowest phones, so no link is left alone on a second line */
+@media (max-width: 22rem) {
   .links {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: center;
-    justify-items: start;
+    column-gap: 0.5rem;
   }
-}
-
-.theme-toggle {
-  border: 0;
-  background: none;
-  font-family: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  cursor: pointer;
-}
-
-.theme-option {
-  display: inline-flex;
-  align-items: center;
-  gap: inherit;
-}
-
-/* The switch offers whichever theme isn't showing */
-:root[data-theme="dark"] .theme-option-dark,
-:root:not([data-theme="dark"]) .theme-option-light {
-  display: none;
 }
 
 .link-icon {
@@ -201,10 +165,6 @@ h1 {
 .showcase {
   width: clamp(18rem, (100svh - 24rem) * 1.78, 700px);
   max-width: 100%;
-}
-
-.showcase picture {
-  display: block;
 }
 
 .showcase img {
