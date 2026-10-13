@@ -47,6 +47,12 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* The ground colour shows through until the image loads */
+  background: url("assets/celerity-background-light.webp") center / cover no-repeat;
+}
+
+:root[data-theme="dark"] body {
+  background-image: url("assets/celerity-background-dark.webp");
 }
 
 img,
