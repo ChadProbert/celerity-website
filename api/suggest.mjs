@@ -10,10 +10,11 @@ const MAX_QUERY_LENGTH = 100;
 const LANGUAGE = /^[a-z]{2,3}(-[a-z0-9]{2,8})?$/i;
 const COUNTRY = /^[A-Z]{2}$/;
 
-// Only the extension and local development may use this server.
+// Only the extension, its GitHub Pages copy and local development may use this server.
 // TODO: once Celerity is on the Chrome Web Store, narrow this to its store ID.
 function allowedOrigin(origin) {
   if (/^chrome-extension:\/\/[a-p]{32}$/.test(origin)) return origin;
+  if (origin === "https://chadprobert.github.io") return origin;
   if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return origin;
   return null;
 }
